@@ -1,12 +1,24 @@
 package org.evox.spen.compat;
-/** One menu request per side-button tap, after release; independent of Android input delivery. */
+/** Samsung-style hover button click; contact belongs to the application. */
 public final class PenTapSequence {
- private boolean previous,armed;private long last=-1000;private int x,y;
- public int[] frame(boolean touch,boolean side,int px,int py,long now,boolean enabled){
-  if(touch&&!previous)armed=side&&enabled;
-  if(touch&&armed){x=px;y=py;}
-  int[] result=null;if(!touch&&previous&&armed&&enabled&&x>=0&&y>=0&&now-last>700){last=now;result=new int[]{x,y};}
-  if(!touch)armed=false;previous=touch;return result;
+ private boolean initialized,previousSide,armed;
+ private long pressed,last=-1000,generation;
+ public synchronized int[] frame(boolean hover,boolean touch,boolean side,int x,int y,long now,boolean enabled){
+  if(!initialized){initialized=true;previousSide=side;return null;}
+  // Cancel the entire press, including lift/recontact while the button stays held.
+  if(!enabled||!hover||touch){armed=false;generation++;}
+  if(side&&!previousSide){armed=enabled&&hover&&!touch;pressed=now;generation++;}
+  int[] result=null;
+  if(!side&&previousSide){
+   long duration=now-pressed;
+   if(armed&&enabled&&hover&&!touch&&duration>0&&duration<=800&&now-last>=400&&x>=0&&y>=0){
+    last=now;result=new int[]{x,y};
+   }
+   armed=false;
+  }
+  previousSide=side;return result;
  }
- public void reset(){previous=armed=false;}
+ public synchronized long ticket(){return generation;}
+ public synchronized boolean canDispatch(long ticket){return initialized&&generation==ticket&&!previousSide;}
+ public synchronized void reset(){initialized=previousSide=armed=false;generation++;}
 }

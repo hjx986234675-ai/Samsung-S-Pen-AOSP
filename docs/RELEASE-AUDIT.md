@@ -19,3 +19,7 @@ Sources: [Chinese Software Protection Regulations](https://www.cac.gov.cn/2013-0
 ## Version 1.2.10 hover regression
 
 Build, signing, 16KB alignment and ZIP CRC checks passed. The mounted Air Command hash matched the local build. Capture and Magnify payloads are unchanged. Simulated input checks passed for stationary hover, routing exits, duplicate enters, movement, proximity loss, tip contact, reader reset and icon detachment. On 2026-10-11 the owner confirmed stable guide display, normal dismissal after moving away and no crash. Temporary Shell Root was disabled after installation. The complete module remains a private local artifact; this release publishes authored source and templates only. Other existing compatibility limitations still apply.
+
+## Version 1.2.11 side-button regression
+
+Removed the transparent tip reservation overlay and changed menu recognition to hover-only button release. Contact cancels a press through subsequent lift/recontact. No per-application exclusions. Fifteen gesture regression checks, build/signing/alignment and byte-preservation checks passed. The updated system app retained its UID and started hardware monitoring. On 2026-10-11 the owner confirmed the reported problem fixed. Capture/Magnify bytes remain unchanged. Complete module reinstall/reboot and full feature acceptance were not repeated. The complete module remains a local artifact; only authored code, tests and documentation are published.
