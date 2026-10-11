@@ -29,3 +29,5 @@ Authored UI additions use English only. Existing Samsung UI follows its own reso
 Read [original application changes](docs/CHANGES-TO-SAMSUNG.md), [permissions](docs/PERMISSIONS.md), [release audit](docs/RELEASE-AUDIT.md) and [local build boundaries](docs/BUILD.md). Keep the original software's rights notices. Noncommercial distribution, attribution or device ownership does not grant permission to redistribute proprietary software.
 
 The MIT license applies only to original material in this repository and grants no rights to Samsung or third-party components.
+
+Version 1.2.8 adds the authored hover-guide input-region adapter. See [hover guide notes](docs/HOVER-GUIDE.md). Physical regression verification is pending.
