@@ -1,4 +1,4 @@
-# Hover guide input region (1.2.8)
+# Hover guide input region (1.2.9)
 
 The original Air Actions battery/action guide can interrupt hover on its own
 floating icon when Samsung window extensions are unavailable. The original
@@ -18,3 +18,12 @@ Retained Samsung call-site changes are local and excluded from this repository.
 Validation: local compile, signature and alignment checks passed.
 Physical hover stability and control interaction are pending confirmation.
 The full local module includes Samsung APKs and is not published here.
+
+The initial 1.2.8 device test crashed because touchableRegion is a
+max-R hidden member. Version 1.2.9 preflights protected members before
+installing the listener and catches callback failures. Air Command alone
+must declare android:usesNonSdkApi="true" and be system-mounted; the authored
+[manifest tool](../tools/enable_system_hidden_apis.py) adds that declaration.
+Do not change global hidden_api_policy settings. This app-specific mechanism
+is implemented by [AOSP ApplicationInfo](https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/content/pm/ApplicationInfo.java).
+Initial 1.2.8 is not a verified release and should not be installed.
