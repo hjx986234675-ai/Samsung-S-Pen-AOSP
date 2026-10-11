@@ -53,11 +53,12 @@ public final class GuidePanelInputRegion {
                     if (icon != null && icon.isAttachedToWindow()) {
                         int[] iconPosition = new int[2];
                         int[] panelPosition = new int[2];
-                        icon.getLocationOnScreen(iconPosition);
+                        View iconWindow = icon.getRootView();
+                        iconWindow.getLocationOnScreen(iconPosition);
                         panel.getLocationOnScreen(panelPosition);
                         int x = iconPosition[0] - panelPosition[0];
                         int y = iconPosition[1] - panelPosition[1];
-                        region.op(new Rect(x, y, x + icon.getWidth(), y + icon.getHeight()),
+                        region.op(new Rect(x, y, x + iconWindow.getWidth(), y + iconWindow.getHeight()),
                             Region.Op.DIFFERENCE);
                     }
                     setInsets.invoke(info, 3);

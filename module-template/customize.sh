@@ -1,6 +1,6 @@
 ui_print "========================================"
 ui_print "       Samsung S Pen for AOSP"
-ui_print "                 1.2.9"
+ui_print "                 1.2.10"
 ui_print "========================================"
 [ "$BOOTMODE" = true ] || abort "Install from the running Root manager, not recovery"
 [ "$ARCH" = arm64 ] || abort "Original Samsung libraries require arm64"

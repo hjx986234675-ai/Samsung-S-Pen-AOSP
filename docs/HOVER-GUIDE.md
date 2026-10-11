@@ -1,4 +1,4 @@
-# Hover guide input region (1.2.9)
+# Hover guide input region (1.2.10)
 
 The original Air Actions battery/action guide can interrupt hover on its own
 floating icon when Samsung window extensions are unavailable. The original
@@ -27,3 +27,17 @@ must declare android:usesNonSdkApi="true" and be system-mounted; the authored
 Do not change global hidden_api_policy settings. This app-specific mechanism
 is implemented by [AOSP ApplicationInfo](https://android.googlesource.com/platform/frameworks/base/+/master/core/java/android/content/pm/ApplicationInfo.java).
 Initial 1.2.8 is not a verified release and should not be installed.
+
+The 1.2.9 physical test stopped the crash but still flickered. Version 1.2.10
+also excludes the full floating window (including icon animation margins).
+GuideHoverOwnership intercepts routing-generated exits and duplicate enters.
+The existing in-package native pen reader supplies hardware position/proximity;
+a confirmed physical departure forwards one exit to Samsung's original handler.
+The original initial enter, 400 ms show timer, guide content and buttons remain.
+This uses the same device-specific digitizer coordinates as the existing pointer
+adapter; it is not verified on other hardware. Without a hardware reader frame,
+original hover delivery is preserved. No additional APK or Root permission.
+
+Local simulated-input tests passed: first enter, duplicate enter, synthetic exit,
+stationary hover for ten seconds without new frames, movement away, proximity
+loss, tip contact, reader reset and detached icon. Device confirmation is pending.

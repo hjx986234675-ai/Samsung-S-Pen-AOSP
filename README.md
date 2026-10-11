@@ -30,4 +30,4 @@ Read [original application changes](docs/CHANGES-TO-SAMSUNG.md), [permissions](d
 
 The MIT license applies only to original material in this repository and grants no rights to Samsung or third-party components.
 
-Version 1.2.9 adds the authored hover-guide input-region adapter. See [hover guide notes](docs/HOVER-GUIDE.md). Physical regression verification is pending.
+Version 1.2.10 adds physical hover ownership to the authored hover-guide input-region adapter. See [hover guide notes](docs/HOVER-GUIDE.md). Physical regression verification is pending.
