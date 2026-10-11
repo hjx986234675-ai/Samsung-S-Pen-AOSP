@@ -18,12 +18,12 @@ public final class ServiceAccess {
    Intent original=new Intent(intent);String name=original.getComponent().getClassName();
    if("com.samsung.android.app.smartselect.SmartClipMainService".equals(name))original.setClassName("com.samsung.android.app.smartcapture","com.samsung.android.app.smartcapture.smartselect.SmartClipMainService");
    Intent entry=new Intent().setClassName("com.samsung.android.app.smartcapture","org.evox.spen.capture.CaptureEntryActivity").putExtra("original_service",original).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-   try{c.startActivity(entry);return original.getComponent();}catch(RuntimeException error){android.util.Log.e("AirCommandPort","Original capture entry unavailable",error);new Handler(Looper.getMainLooper()).post(()->android.widget.Toast.makeText(c,"该工具暂不可用",android.widget.Toast.LENGTH_SHORT).show());return null;}
+   try{c.startActivity(entry);return original.getComponent();}catch(RuntimeException error){android.util.Log.e("AirCommandPort","Original capture entry unavailable",error);new Handler(Looper.getMainLooper()).post(()->android.widget.Toast.makeText(c,"This tool is currently unavailable",android.widget.Toast.LENGTH_SHORT).show());return null;}
   }
   try{return c.startService(intent);}catch(IllegalStateException blocked){
    if(!"com.samsung.android.service.aircommand.action.REMOTE_SPEN_SERVICE".equals(intent.getAction())){
     android.util.Log.e("AirCommandPort","Original tool launch blocked by Android service policy: "+intent.getComponent(),blocked);
-    new Handler(Looper.getMainLooper()).post(()->android.widget.Toast.makeText(c,"该工具暂不可用",android.widget.Toast.LENGTH_SHORT).show());
+    new Handler(Looper.getMainLooper()).post(()->android.widget.Toast.makeText(c,"This tool is currently unavailable",android.widget.Toast.LENGTH_SHORT).show());
     return null;
    }
    Context app=c.getApplicationContext();Intent nativeIntent=new Intent(intent);new Handler(Looper.getMainLooper()).postDelayed(()->{try{app.startService(nativeIntent);android.util.Log.i("AirCommandPort","Original RemoteSpenService started after activity initialization");}catch(RuntimeException error){android.util.Log.w("AirCommandPort","Original BLE service start: "+error.getMessage());}},1000);return null;

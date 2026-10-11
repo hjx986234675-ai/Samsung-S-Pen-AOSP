@@ -1,11 +1,23 @@
-# 本地构建边界
+# Local build boundaries
 
-需要自行取得 JDK、Android SDK（开发使用 android-35/android.jar）及对应工具。`python tools/compile_adapters.py --android-jar /path/android.jar --javac /path/javac --output build/classes` 分组编译自编兼容层，不能输出完整应用。部分接口为反射和运行时适配，编译通过不等于真机可用。
+Obtain a JDK and Android SDK yourself (development used android-35/android.jar). Compile the independently authored adapters:
 
-`resources` 可用 aapt2 compile/link 构建独立资源包，参数 `--package-id 0x7e --allow-reserved-package-id --stable-ids resources/stable-ids.txt`。无障碍 XML/图标/颜色依次为 0x7e010000/0x7e020000/0x7e030000。
+```
+python tools/compile_adapters.py --android-jar /path/android.jar --javac /path/javac --output build/classes
+```
 
-`tools/add_settings_alias.py SOURCE OUTPUT` 只在尚无入口的授权本地 Air Command 输入 APK 上插入 Settings 别名，保留其其他文件；输出尚未签名且必须合并 `resources` 包。不是完整移植流程，不要直接安装该中间结果。
+Compilation groups are separate. This command does not produce a complete application. Reflection/runtime integration still needs device testing.
 
-完整 APK 需要对应合法供体、原版调用点改写、资源表合并和同项目签名；这些专有修改载荷未公开。不要把三个未经适配的原厂 APK 当作可用输入。
+Build `resources` with aapt2 compile/link and `--package-id 0x7e --allow-reserved-package-id --stable-ids resources/stable-ids.txt`. Accessibility XML, Settings icon and dynamic background have IDs 0x7e010000, 0x7e020000 and 0x7e030000 respectively.
 
-若已经拥有合法完成适配且同签名的三个 APK，可用 `python tools/package_module.py --air AIR.apk --capture CAP.apk --magnify MAG.apk --output build/local-module.zip` 生成仅供本地的模块 ZIP。不要将该生成文件上传到公开仓库或 Releases，除非取得相关再分发权利。签名密钥自行生成并离线保管。
+`python tools/add_settings_alias.py SOURCE OUTPUT` adds an AOSP Settings alias to an authorized local Air Command APK without a pre-existing alias. Other input entries are preserved. The unsigned intermediate output must be merged with the resource package and re-signed; it is not a complete port or directly installable result.
+
+A complete port requires an authorized donor, original call-site modifications, resource-table merging and a common project signing identity. Complete proprietary modification payloads are not published. Unmodified stock APKs are not supported inputs to the module template.
+
+If you already have three legally adapted and same-signed local APKs, package a local module:
+
+```
+python tools/package_module.py --air AIR.apk --capture CAP.apk --magnify MAG.apk --output build/local-module.zip
+```
+
+Signing and runtime compatibility must be verified separately. Do not upload generated modules to public repositories or Releases without relevant redistribution rights. Generate and retain your own private signing keys offline.
