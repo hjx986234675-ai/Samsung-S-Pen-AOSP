@@ -16,7 +16,7 @@ an EvolutionX-specific API. Reflection failures are logged explicitly.
 Retained Samsung call-site changes are local and excluded from this repository.
 
 Validation: local compile, signature and alignment checks passed.
-Physical hover stability and control interaction are pending confirmation.
+The owner confirmed stable hover display, dismissal after moving away and no crash on SM-T970 on 2026-10-11. This confirms the hover regression; a complete all-feature regression is not claimed.
 The full local module includes Samsung APKs and is not published here.
 
 The initial 1.2.8 device test crashed because touchableRegion is a
@@ -40,4 +40,4 @@ original hover delivery is preserved. No additional APK or Root permission.
 
 Local simulated-input tests passed: first enter, duplicate enter, synthetic exit,
 stationary hover for ten seconds without new frames, movement away, proximity
-loss, tip contact, reader reset and detached icon. Device confirmation is pending.
+loss, tip contact, reader reset and detached icon. Device hover confirmation passed on SM-T970 on 2026-10-11.
