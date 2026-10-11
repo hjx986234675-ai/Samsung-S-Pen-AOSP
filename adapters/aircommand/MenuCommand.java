@@ -1,0 +1,5 @@
+package org.evox.spen.compat;
+import android.app.Service;import android.content.Intent;import android.os.Message;
+public final class MenuCommand {
+ public static boolean dispatch(Service s,Message m){if(m.what==0x4558){CompatibilityDiagnostics.probe(s,m);return true;}if(m.what==0x4557){if(s!=null&&m.replyTo!=null){android.os.Bundle b=new android.os.Bundle();android.content.SharedPreferences pref=s.getSharedPreferences("actionrule",0);for(String key:new String[]{"base_rule","app_defined_rule","media_control_rule","camera_control_rule"})b.putString(key,pref.getString(key,"[]"));android.os.Message reply=android.os.Message.obtain(null,0x4557,m.arg1,0);reply.setData(b);try{m.replyTo.send(reply);}catch(android.os.RemoteException e){android.util.Log.w("AirCommandPort","Rule snapshot reply failed",e);}}return true;}if(m.what!=0x4556)return false;if(s!=null){String cause=m.getData().getString("cause");if("button_pressed".equals(cause)||"floating_on".equals(cause))s.onStartCommand(new Intent().putExtras(m.getData()),0,0);}return true;}
+}

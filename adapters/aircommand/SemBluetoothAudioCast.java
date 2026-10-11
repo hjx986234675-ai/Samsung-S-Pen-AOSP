@@ -1,0 +1,1 @@
+package com.samsung.android.bluetooth;public abstract class SemBluetoothAudioCast extends SemBluetoothCastProfile {public static boolean getProxy(android.content.Context c,BluetoothCastProfileListener l){return false;}public abstract java.util.List<SemBluetoothCastDevice> getConnectedDevices();}

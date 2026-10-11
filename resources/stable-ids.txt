@@ -1,0 +1,3 @@
+org.samsung.spen.port.magnificationresources:xml/native_magnification = 0x7e010000
+org.samsung.spen.port.magnificationresources:drawable/ic_spen_settings = 0x7e020000
+org.samsung.spen.port.magnificationresources:color/spen_settings_background = 0x7e030000

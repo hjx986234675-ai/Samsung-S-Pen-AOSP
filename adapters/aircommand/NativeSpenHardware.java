@@ -1,0 +1,18 @@
+package org.evox.spen.compat;
+import android.content.Context;import java.io.*;import java.util.concurrent.TimeUnit;import android.bluetooth.BluetoothAdapter;
+/** In-package access to the tablet's existing Samsung pen hardware, without external bridge IPC. */
+public final class NativeSpenHardware {
+ private static NativeSpenHardware instance;
+ public static synchronized Object obtain(Context c,String serviceName){RuntimeContext.init(c);Object original=c.getSystemService(serviceName);if(original!=null)return original;if(instance==null){instance=new NativeSpenHardware();instance.monitorInsertion(c.getApplicationContext());}return instance;}
+ private void monitorInsertion(final Context context){NativePenInput.start(context);Thread worker=new Thread(()->{Boolean previous=null;while(!Thread.currentThread().isInterrupted()){try{boolean inserted=isSpenInserted();if(previous==null||previous.booleanValue()!=inserted){boolean initial=previous==null;previous=Boolean.valueOf(inserted);android.content.Intent event=new android.content.Intent("com.samsung.pen.INSERT").setPackage(context.getPackageName()).putExtra("penInsert",inserted);context.sendBroadcast(event);NativePenInput.insertion(context,inserted,initial);android.util.Log.i("AirCommandPort","Native pen insertion event="+inserted);}Thread.sleep(1200);}catch(InterruptedException e){Thread.currentThread().interrupt();}catch(Exception e){android.util.Log.w("AirCommandPort","Pen insertion monitor: "+e.getMessage());try{Thread.sleep(3000);}catch(InterruptedException stopped){Thread.currentThread().interrupt();}}}},"AirCommand-native-insertion");worker.setDaemon(true);worker.start();}
+ private String read(String path){try{java.lang.Process p=new ProcessBuilder("su","-c","cat "+path).start();if(!p.waitFor(2,TimeUnit.SECONDS)){p.destroy();throw new IOException("Root read timeout");}if(p.exitValue()!=0)throw new IOException("Root read denied");try(BufferedReader in=new BufferedReader(new InputStreamReader(p.getInputStream()))){String value=in.readLine();return value==null?"":value.trim();}}catch(Exception e){throw new IllegalStateException("Air Command hardware access: "+e.getMessage(),e);}}
+ private void write(String path,int value){try{java.lang.Process p=new ProcessBuilder("su","-c","echo "+value+" > "+path).start();if(!p.waitFor(2,TimeUnit.SECONDS)){p.destroy();throw new IOException("Root write timeout");}if(p.exitValue()!=0)throw new IOException("Driver write denied");android.util.Log.i("AirCommandPort","Original Samsung driver command: "+path.substring(path.lastIndexOf('/')+1)+"="+value);}catch(Exception e){throw new IllegalStateException("Air Command hardware access: "+e.getMessage(),e);}}
+ /** Original SemInputDeviceManager SPEN_BLE_CHARGING -> BLE_CHARGING property. */
+ public void writeBleSpenCommand(String command){write("/sys/class/sec/sec_epen/epen_ble_charging_mode",Integer.parseInt(command));}
+ /** Original SemInputDeviceManager SPEN_SAVING_MODE -> EPEN_SAVING property. */
+ public void setSpenPowerSavingModeEnabled(boolean enabled){write("/sys/class/sec/sec_epen/epen_saving_mode",enabled?1:0);}
+ public String getBleSpenAddress(){String address=read("/efs/spen/blespen_addr").toUpperCase(java.util.Locale.ROOT);if(!BluetoothAdapter.checkBluetoothAddress(address))throw new IllegalStateException("Invalid Samsung EFS pen address");android.util.Log.i("AirCommandPort","Original Air Command read native pen address from Samsung EFS");return address;}
+ public String getBleSpenCmfCode(){return read("/efs/spen/blespen_cmf");}
+ public String getBleSpenCmf(){return getBleSpenCmfCode();}
+ public boolean isSpenInserted(){return "1".equals(read("/sys/class/sec/sec_epen/epen_insert"));}
+}

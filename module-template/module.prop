@@ -1,0 +1,6 @@
+id=samsung_spen_aosp
+name=Samsung S Pen for AOSP
+version=1.2.6
+versionCode=126
+author=Local Samsung port
+description=Original Samsung S Pen UI, Air Actions, magnifier and capture with AOSP adapters. Tested SM-T970 Android17.

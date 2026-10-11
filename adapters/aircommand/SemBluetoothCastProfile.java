@@ -1,0 +1,1 @@
+package com.samsung.android.bluetooth;public abstract class SemBluetoothCastProfile {public interface BluetoothCastProfileListener {void onServiceConnected(SemBluetoothCastProfile p);void onServiceDisconnected();}}
