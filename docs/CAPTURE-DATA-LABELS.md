@@ -17,5 +17,5 @@ Chrome blank-page Screen write opened the original editor and saved a JPEG into
 DCIM/Screenshots after repair. No screenshot pixels were transferred to the PC.
 The helper was executed successfully on the device. All three module APK payloads
 are byte-identical to installed 1.2.10. The 1.2.11 module update is staged for the
-next reboot; live data repair is already applied. Actual-menu and Smart select
-regression confirmation remains pending. This is not a FLAG_SECURE bypass.
+next reboot; live data repair is already applied. On 2026-10-12 the owner confirmed actual-menu Screen write and Smart select
+work in third-party apps and save normally. This is not a FLAG_SECURE bypass.
