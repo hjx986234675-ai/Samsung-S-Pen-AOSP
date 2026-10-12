@@ -6,6 +6,7 @@ MAG=com.samsung.android.app.readingglass
 for pkg in "$AIR" "$CAP" "$MAG"; do
  /system/bin/pm path "$pkg" >/dev/null || exit 1
 done
+/system/bin/sh "$MODDIR/reconcile-capture-data.sh"
 # Keep mappings and Root profiles. Migrate only the previously enabled magnification support service.
 OLD=org.evox.spen.bridge/org.evox.spen.bridge.MagnifierService
 NEW=$AIR/org.evox.spen.compat.NativeMagnificationService
