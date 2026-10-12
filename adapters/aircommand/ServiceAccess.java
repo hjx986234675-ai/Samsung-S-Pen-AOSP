@@ -10,6 +10,7 @@ public final class ServiceAccess {
 
  public static ComponentName start(Context c,Intent intent,UserHandle user) {
   if(UnlockPolicy.disabled(intent))return null;
+  if(intent.getComponent()!=null && "com.samsung.android.app.notes.screenoffmemo.ScreenOffMemoService".equals(intent.getComponent().getClassName()))return null;
   RuntimeContext.init(c);
   Parcel p=Parcel.obtain();int id;
   try{user.writeToParcel(p,0);p.setDataPosition(0);id=p.readInt();}finally{p.recycle();}
